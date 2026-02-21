@@ -69,6 +69,31 @@ public partial class MainWindow : Window
     }
   }
 
+  private void OnAvailableListDoubleTapped(object? sender, TappedEventArgs e)
+  {
+    if (FindWindowInfo(e.Source as Control) is { } window
+        && DataContext is MainWindowViewModel vm)
+      vm.MakeSelectedBorderless([window]);
+  }
+
+  private void OnBorderlessListDoubleTapped(object? sender, TappedEventArgs e)
+  {
+    if (FindWindowInfo(e.Source as Control) is { } window
+        && DataContext is MainWindowViewModel vm)
+      vm.RestoreSelected([window]);
+  }
+
+  private static WindowInfo? FindWindowInfo(Control? current)
+  {
+    while (current is not null)
+    {
+      if (current.DataContext is WindowInfo window)
+        return window;
+      current = current.Parent as Control;
+    }
+    return null;
+  }
+
   private void OnAvailableContextMenuOpening(object? sender, CancelEventArgs e)
   {
     if (sender is not ContextMenu menu

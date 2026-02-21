@@ -1,5 +1,9 @@
 [
   {
+    "processName": "WindowedBorderless",
+    "description": "Windowed Borderless"
+  },
+  {
     "processName": "WINWORD",
     "description": "Microsoft Word"
   },

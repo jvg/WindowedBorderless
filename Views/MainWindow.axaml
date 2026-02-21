@@ -56,7 +56,8 @@
           <ListBox Grid.Row="1"
                    x:Name="AvailableList"
                    ItemsSource="{Binding AvailableWindows}"
-                   SelectionMode="Multiple">
+                   SelectionMode="Multiple"
+                   DoubleTapped="OnAvailableListDoubleTapped">
             <ListBox.ContextMenu>
               <ContextMenu Opening="OnAvailableContextMenuOpening">
                 <MenuItem x:Name="IgnoreMenuItem" Header="Ignore" Click="OnIgnoreClick" />
@@ -105,7 +106,8 @@
           <ListBox Grid.Row="1"
                    x:Name="BorderlessList"
                    ItemsSource="{Binding BorderlessWindows}"
-                   SelectionMode="Multiple">
+                   SelectionMode="Multiple"
+                   DoubleTapped="OnBorderlessListDoubleTapped">
             <ListBox.ItemTemplate>
               <DataTemplate x:DataType="m:WindowInfo">
                 <StackPanel Orientation="Horizontal" Spacing="10">
