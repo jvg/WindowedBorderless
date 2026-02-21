@@ -26,5 +26,9 @@
   {
     "processName": "arc",
     "description": "Arc Browser"
+  },
+  {
+    "processName": "steamwebhelper",
+    "description": "Steam Web Helper"
   }
 ]

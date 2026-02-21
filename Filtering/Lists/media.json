@@ -42,5 +42,9 @@
   {
     "processName": "ShareX",
     "description": "ShareX"
+  },
+  {
+    "processName": "paintdotnet",
+    "description": "Paint.NET"
   }
 ]
