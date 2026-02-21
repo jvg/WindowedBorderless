@@ -1,0 +1,26 @@
+[
+  {
+    "processName": "WINWORD",
+    "description": "Microsoft Word"
+  },
+  {
+    "processName": "EXCEL",
+    "description": "Microsoft Excel"
+  },
+  {
+    "processName": "POWERPNT",
+    "description": "Microsoft PowerPoint"
+  },
+  {
+    "processName": "OUTLOOK",
+    "description": "Microsoft Outlook"
+  },
+  {
+    "processName": "ONENOTE",
+    "description": "Microsoft OneNote"
+  },
+  {
+    "processName": "Acrobat",
+    "description": "Adobe Acrobat"
+  }
+]

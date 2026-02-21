@@ -1,0 +1,30 @@
+[
+  {
+    "processName": "Discord",
+    "description": "Discord"
+  },
+  {
+    "processName": "Telegram",
+    "description": "Telegram"
+  },
+  {
+    "processName": "Teams",
+    "description": "Microsoft Teams"
+  },
+  {
+    "processName": "Slack",
+    "description": "Slack"
+  },
+  {
+    "processName": "Zoom",
+    "description": "Zoom"
+  },
+  {
+    "processName": "mumble",
+    "description": "Mumble voice chat"
+  },
+  {
+    "processName": "ts3client_win64",
+    "description": "TeamSpeak 3"
+  }
+]

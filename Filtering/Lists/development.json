@@ -1,0 +1,90 @@
+[
+  {
+    "processName": "devenv",
+    "description": "Visual Studio"
+  },
+  {
+    "processName": "Code",
+    "description": "Visual Studio Code"
+  },
+  {
+    "processName": "rider64",
+    "description": "JetBrains Rider"
+  },
+  {
+    "processName": "idea64",
+    "description": "IntelliJ IDEA"
+  },
+  {
+    "processName": "pycharm64",
+    "description": "PyCharm"
+  },
+  {
+    "processName": "webstorm64",
+    "description": "WebStorm"
+  },
+  {
+    "processName": "sublime_text",
+    "description": "Sublime Text"
+  },
+  {
+    "processName": "notepad++",
+    "description": "Notepad++"
+  },
+  {
+    "processName": "notepad",
+    "description": "Notepad"
+  },
+  {
+    "processName": "WindowsTerminal",
+    "description": "Windows Terminal"
+  },
+  {
+    "processName": "cmd",
+    "description": "Command Prompt"
+  },
+  {
+    "processName": "powershell",
+    "description": "Windows PowerShell"
+  },
+  {
+    "processName": "pwsh",
+    "description": "PowerShell"
+  },
+  {
+    "processName": "ConHost",
+    "description": "Console Window Host"
+  },
+  {
+    "processName": "mintty",
+    "description": "MinTTY Terminal"
+  },
+  {
+    "processName": "GitHubDesktop",
+    "description": "GitHub Desktop"
+  },
+  {
+    "processName": "SourceTree",
+    "description": "Atlassian SourceTree"
+  },
+  {
+    "processName": "Postman",
+    "description": "Postman"
+  },
+  {
+    "processName": "DockerDesktop",
+    "description": "Docker Desktop"
+  },
+  {
+    "processName": "Everything",
+    "description": "Everything Search"
+  },
+  {
+    "processName": "TotalCmd64",
+    "description": "Total Commander"
+  },
+  {
+    "processName": "dopus",
+    "description": "Directory Opus"
+  }
+]

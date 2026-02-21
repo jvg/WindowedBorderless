@@ -1,0 +1,46 @@
+[
+  {
+    "processName": "Spotify",
+    "description": "Spotify"
+  },
+  {
+    "processName": "vlc",
+    "description": "VLC Media Player"
+  },
+  {
+    "processName": "wmplayer",
+    "description": "Windows Media Player"
+  },
+  {
+    "processName": "foobar2000",
+    "description": "foobar2000"
+  },
+  {
+    "processName": "NVIDIA Share",
+    "description": "NVIDIA GeForce Overlay"
+  },
+  {
+    "processName": "NVIDIA Overlay",
+    "description": "NVIDIA App Overlay"
+  },
+  {
+    "processName": "NVDisplay.Container",
+    "description": "NVIDIA Display Container"
+  },
+  {
+    "processName": "nvcontainer",
+    "description": "NVIDIA Container"
+  },
+  {
+    "processName": "nvsphelper64",
+    "description": "NVIDIA ShadowPlay Helper"
+  },
+  {
+    "processName": "RadeonSoftware",
+    "description": "AMD Radeon Software"
+  },
+  {
+    "processName": "ShareX",
+    "description": "ShareX"
+  }
+]

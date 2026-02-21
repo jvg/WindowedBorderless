@@ -1,0 +1,235 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:WindowedBorderless.ViewModels"
+        x:Class="WindowedBorderless.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Windowed Borderless"
+        Width="900" Height="580"
+        WindowStartupLocation="CenterScreen">
+
+  <Grid Margin="24" RowDefinitions="Auto,*,Auto">
+
+    <!-- Header -->
+    <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,20">
+      <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+        <TextBlock Text="Windowed Borderless"
+                   FontSize="22" FontWeight="SemiBold"
+                   VerticalAlignment="Center" />
+        <Button x:Name="IgnoreListToggleButton"
+                Click="OnToggleIgnoreListView"
+                ToolTip.Tip="Manage ignore lists"
+                Padding="6" VerticalAlignment="Center">
+          <PathIcon Width="16" Height="16"
+                    Data="M 12.012 2.828 L 2.828 12.012 L 0 16 L 3.988 13.172 L 13.172 3.988 Z M 14.142 0.858 A 2 2 0 0 1 14.142 3.686 L 13.172 3.988 L 12.012 2.828 L 12.314 1.858 A 2 2 0 0 1 14.142 0.858 Z" />
+        </Button>
+      </StackPanel>
+      <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+        <TextBlock Text="Theme" VerticalAlignment="Center" Classes="subtle" />
+        <ComboBox ItemsSource="{Binding ThemeOptions}"
+                  SelectedItem="{Binding SelectedTheme}"
+                  MinWidth="110" />
+        <Button Click="OnOpenAppDataClick"
+                ToolTip.Tip="Open settings folder"
+                Padding="6" VerticalAlignment="Center">
+          <PathIcon Width="14" Height="14"
+                    Data="M 1,4 L 1,14 L 15,14 L 15,6 L 8,6 L 6,4 Z M 0,3 L 6.5,3 L 8.5,5 L 16,5 L 16,15 L 0,15 Z" />
+        </Button>
+      </StackPanel>
+    </Grid>
+
+    <!-- Main shuttle content -->
+    <Grid Grid.Row="1" ColumnDefinitions="*,Auto,*" Margin="0,0,0,16"
+          IsVisible="{Binding !ShowIgnoreListView}">
+
+      <!-- Available windows card -->
+      <Border Classes="card">
+        <Grid RowDefinitions="Auto,*">
+          <Border Padding="16,12"
+                  Background="{DynamicResource CardHeaderBrush}"
+                  BorderThickness="0,0,0,1"
+                  BorderBrush="{DynamicResource CardBorderBrush}">
+            <TextBlock Text="Available Windows"
+                       FontWeight="SemiBold" FontSize="13" />
+          </Border>
+          <ListBox Grid.Row="1"
+                   x:Name="AvailableList"
+                   ItemsSource="{Binding AvailableWindows}"
+                   SelectionMode="Multiple">
+            <ListBox.ContextMenu>
+              <ContextMenu Opening="OnAvailableContextMenuOpening">
+                <MenuItem x:Name="IgnoreMenuItem" Header="Ignore" Click="OnIgnoreClick" />
+                <MenuItem x:Name="UnignoreMenuItem" Header="Unignore" Click="OnUnignoreClick" />
+              </ContextMenu>
+            </ListBox.ContextMenu>
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                  <Image Source="{Binding Icon}" Width="20" Height="20"
+                         VerticalAlignment="Center"
+                         IsVisible="{Binding Icon, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                  <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" />
+                </StackPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </Grid>
+      </Border>
+
+      <!-- Shuttle buttons -->
+      <StackPanel Grid.Column="1" VerticalAlignment="Center"
+                  Margin="16,0" Spacing="12">
+        <Button Classes="shuttle" Click="OnMakeBorderlessClick"
+                ToolTip.Tip="Make borderless">
+          <PathIcon Width="14" Height="14"
+                    Data="M 3,1 L 11,8 L 3,15" />
+        </Button>
+        <Button Classes="shuttle" Click="OnRestoreClick"
+                ToolTip.Tip="Restore window">
+          <PathIcon Width="14" Height="14"
+                    Data="M 11,1 L 3,8 L 11,15" />
+        </Button>
+      </StackPanel>
+
+      <!-- Borderless windows card -->
+      <Border Grid.Column="2" Classes="card">
+        <Grid RowDefinitions="Auto,*">
+          <Border Padding="16,12"
+                  Background="{DynamicResource CardHeaderBrush}"
+                  BorderThickness="0,0,0,1"
+                  BorderBrush="{DynamicResource CardBorderBrush}">
+            <TextBlock Text="Borderless Windows"
+                       FontWeight="SemiBold" FontSize="13" />
+          </Border>
+          <ListBox Grid.Row="1"
+                   x:Name="BorderlessList"
+                   ItemsSource="{Binding BorderlessWindows}"
+                   SelectionMode="Multiple">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                  <Image Source="{Binding Icon}" Width="20" Height="20"
+                         VerticalAlignment="Center"
+                         IsVisible="{Binding Icon, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                  <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" />
+                </StackPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </Grid>
+      </Border>
+
+    </Grid>
+
+    <!-- Ignore list management view -->
+    <Grid Grid.Row="1" ColumnDefinitions="*,24,*" Margin="0,0,0,16"
+          IsVisible="{Binding ShowIgnoreListView}">
+
+      <!-- Default ignore list card -->
+      <Border Classes="card">
+        <Grid RowDefinitions="Auto,Auto,*">
+          <Border Padding="16,12"
+                  Background="{DynamicResource CardHeaderBrush}"
+                  BorderThickness="0,0,0,1"
+                  BorderBrush="{DynamicResource CardBorderBrush}">
+            <TextBlock Text="Default Ignore List"
+                       FontWeight="SemiBold" FontSize="13" />
+          </Border>
+          <TextBox Grid.Row="1"
+                   Watermark="Search..."
+                   Text="{Binding IgnoreListSearch}"
+                   Margin="8,8,8,4" />
+          <TreeView Grid.Row="2"
+                    ItemsSource="{Binding IgnoreListCategories}"
+                    x:DataType="vm:MainWindowViewModel">
+            <TreeView.ItemTemplate>
+              <TreeDataTemplate x:DataType="vm:IgnoreListCategoryViewModel"
+                                ItemsSource="{Binding FilteredEntries}">
+                <TextBlock FontWeight="SemiBold" FontSize="12">
+                  <Run Text="{Binding Name}" /><Run Text=" (" /><Run Text="{Binding TotalCount}" /><Run Text=")" />
+                </TextBlock>
+              </TreeDataTemplate>
+            </TreeView.ItemTemplate>
+            <TreeView.Styles>
+              <!-- Hide categories with no search matches -->
+              <Style Selector="TreeViewItem" x:DataType="vm:IgnoreListCategoryViewModel">
+                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                <Setter Property="IsVisible" Value="{Binding IsVisible}" />
+              </Style>
+            </TreeView.Styles>
+            <TreeView.DataTemplates>
+              <DataTemplate x:DataType="vm:IgnoreListItemViewModel">
+                <Grid ColumnDefinitions="*,Auto">
+                  <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding ProcessName}" FontSize="13" />
+                    <TextBlock Text="{Binding Description}" FontSize="11" Classes="subtle" />
+                  </StackPanel>
+                  <ToggleSwitch Grid.Column="1"
+                                IsChecked="{Binding IsForced}"
+                                OnContent="Show" OffContent=""
+                                VerticalAlignment="Center"
+                                Click="OnToggleForcedClick" />
+                </Grid>
+              </DataTemplate>
+            </TreeView.DataTemplates>
+          </TreeView>
+        </Grid>
+      </Border>
+
+      <!-- User ignored list card -->
+      <Border Grid.Column="2" Classes="card">
+        <Grid RowDefinitions="Auto,*">
+          <Border Padding="16,12"
+                  Background="{DynamicResource CardHeaderBrush}"
+                  BorderThickness="0,0,0,1"
+                  BorderBrush="{DynamicResource CardBorderBrush}">
+            <TextBlock Text="User Ignored"
+                       FontWeight="SemiBold" FontSize="13" />
+          </Border>
+          <ListBox Grid.Row="1"
+                   ItemsSource="{Binding UserIgnoredEntries}"
+                   SelectionMode="Single">
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="x:String">
+                <Grid ColumnDefinitions="*,Auto">
+                  <TextBlock Text="{Binding}" VerticalAlignment="Center" FontSize="13" />
+                  <Button Grid.Column="1"
+                          Click="OnRemoveUserIgnoreClick"
+                          Tag="{Binding}"
+                          ToolTip.Tip="Remove from ignore list"
+                          Padding="4">
+                    <PathIcon Width="12" Height="12"
+                              Data="M 2.59 0 L 6 3.41 L 9.41 0 L 12 2.59 L 8.59 6 L 12 9.41 L 9.41 12 L 6 8.59 L 2.59 12 L 0 9.41 L 3.41 6 L 0 2.59 Z" />
+                  </Button>
+                </Grid>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </Grid>
+      </Border>
+
+    </Grid>
+
+    <!-- Footer toolbar -->
+    <Border Grid.Row="2" Classes="toolbar">
+      <StackPanel Orientation="Horizontal" Spacing="20"
+                  HorizontalAlignment="Right" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" Spacing="8"
+                    IsVisible="{Binding !ShowIgnoreListView}">
+          <TextBlock Text="Restore on Close" VerticalAlignment="Center"
+                     Classes="subtle" />
+          <ToggleSwitch IsChecked="{Binding RestoreOnClose}"
+                        OnContent="" OffContent="" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Spacing="8"
+                    IsVisible="{Binding !ShowIgnoreListView}">
+          <TextBlock Text="Show All" VerticalAlignment="Center"
+                     Classes="subtle" />
+          <ToggleSwitch IsChecked="{Binding ShowAll}"
+                        OnContent="" OffContent="" />
+        </StackPanel>
+      </StackPanel>
+    </Border>
+
+
+  </Grid>
+</Window>

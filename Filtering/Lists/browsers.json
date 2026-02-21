@@ -1,0 +1,30 @@
+[
+  {
+    "processName": "chrome",
+    "description": "Google Chrome"
+  },
+  {
+    "processName": "firefox",
+    "description": "Mozilla Firefox"
+  },
+  {
+    "processName": "msedge",
+    "description": "Microsoft Edge"
+  },
+  {
+    "processName": "brave",
+    "description": "Brave Browser"
+  },
+  {
+    "processName": "opera",
+    "description": "Opera Browser"
+  },
+  {
+    "processName": "vivaldi",
+    "description": "Vivaldi Browser"
+  },
+  {
+    "processName": "arc",
+    "description": "Arc Browser"
+  }
+]

@@ -1,0 +1,106 @@
+[
+  {
+    "processName": "explorer",
+    "description": "Windows Explorer"
+  },
+  {
+    "processName": "ApplicationFrameHost",
+    "description": "UWP App Host"
+  },
+  {
+    "processName": "TextInputHost",
+    "description": "Windows Text Input"
+  },
+  {
+    "processName": "SystemSettings",
+    "description": "Windows Settings"
+  },
+  {
+    "processName": "SearchHost",
+    "description": "Windows Search"
+  },
+  {
+    "processName": "ShellExperienceHost",
+    "description": "Windows Shell"
+  },
+  {
+    "processName": "StartMenuExperienceHost",
+    "description": "Start Menu"
+  },
+  {
+    "processName": "RuntimeBroker",
+    "description": "Windows Runtime Broker"
+  },
+  {
+    "processName": "LockApp",
+    "description": "Windows Lock Screen"
+  },
+  {
+    "processName": "Widgets",
+    "description": "Windows Widgets"
+  },
+  {
+    "processName": "GameBar",
+    "description": "Xbox Game Bar"
+  },
+  {
+    "processName": "dwm",
+    "description": "Desktop Window Manager"
+  },
+  {
+    "processName": "csrss",
+    "description": "Client Server Runtime"
+  },
+  {
+    "processName": "svchost",
+    "description": "Windows Service Host"
+  },
+  {
+    "processName": "sihost",
+    "description": "Shell Infrastructure Host"
+  },
+  {
+    "processName": "ctfmon",
+    "description": "Input Service"
+  },
+  {
+    "processName": "dllhost",
+    "description": "COM Surrogate"
+  },
+  {
+    "processName": "backgroundTaskHost",
+    "description": "Background Task Host"
+  },
+  {
+    "processName": "SecurityHealthSystray",
+    "description": "Windows Security"
+  },
+  {
+    "processName": "PhoneExperienceHost",
+    "description": "Phone Link"
+  },
+  {
+    "processName": "Taskmgr",
+    "description": "Task Manager"
+  },
+  {
+    "processName": "perfmon",
+    "description": "Performance Monitor"
+  },
+  {
+    "processName": "mmc",
+    "description": "Management Console"
+  },
+  {
+    "processName": "regedit",
+    "description": "Registry Editor"
+  },
+  {
+    "processName": "dxdiag",
+    "description": "DirectX Diagnostic"
+  },
+  {
+    "processName": "SnippingTool",
+    "description": "Snipping Tool"
+  }
+]
