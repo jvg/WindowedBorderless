@@ -137,6 +137,11 @@ public partial class MainWindow : Window
       vm.RemoveUserIgnore(processName);
   }
 
+  private void OnRestartToUpdateClick(object? sender, RoutedEventArgs e)
+  {
+    (DataContext as MainWindowViewModel)?.RestartToUpdate();
+  }
+
   private void OnOpenAppDataClick(object? sender, RoutedEventArgs e)
   {
     var folder = Path.Combine(

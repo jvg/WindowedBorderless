@@ -3,6 +3,8 @@ using Avalonia;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Velopack;
+using Velopack.Sources;
 using WindowedBorderless.Filtering;
 using WindowedBorderless.Models;
 using WindowedBorderless.Services;
@@ -22,6 +24,11 @@ public partial class MainWindowViewModel(
 
   [ObservableProperty] private bool _restoreOnClose = true;
 
+  [ObservableProperty] private bool _isUpdateReady;
+
+  private UpdateManager? _updateManager;
+  private UpdateInfo? _pendingUpdate;
+
   [ObservableProperty] private bool _showIgnoreListView;
 
   [ObservableProperty] private string _ignoreListSearch = "";
@@ -36,6 +43,30 @@ public partial class MainWindowViewModel(
 
   private DispatcherTimer? _debounceTimer;
   private DispatcherTimer? _fallbackTimer;
+
+  public async Task CheckForUpdatesAsync()
+  {
+    try
+    {
+      _updateManager = new UpdateManager(new GithubSource("https://github.com/jvg/WindowedBorderless", null, false));
+      _pendingUpdate = await _updateManager.CheckForUpdatesAsync();
+      if (_pendingUpdate is not null)
+      {
+        await _updateManager.DownloadUpdatesAsync(_pendingUpdate);
+        IsUpdateReady = true;
+      }
+    }
+    catch
+    {
+      // Silently ignore — app must always start regardless of network
+    }
+  }
+
+  public void RestartToUpdate()
+  {
+    if (_pendingUpdate is not null)
+      _updateManager?.ApplyUpdatesAndRestart(_pendingUpdate);
+  }
 
   partial void OnSelectedThemeChanged(string value)
   {

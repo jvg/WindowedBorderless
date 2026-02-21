@@ -213,23 +213,29 @@
 
     <!-- Footer toolbar -->
     <Border Grid.Row="2" Classes="toolbar">
-      <StackPanel Orientation="Horizontal" Spacing="20"
-                  HorizontalAlignment="Right" VerticalAlignment="Center">
-        <StackPanel Orientation="Horizontal" Spacing="8"
-                    IsVisible="{Binding !ShowIgnoreListView}">
-          <TextBlock Text="Restore on Close" VerticalAlignment="Center"
-                     Classes="subtle" />
-          <ToggleSwitch IsChecked="{Binding RestoreOnClose}"
-                        OnContent="" OffContent="" />
+      <Grid>
+        <Button Content="Update available — restart"
+                IsVisible="{Binding IsUpdateReady}"
+                Click="OnRestartToUpdateClick"
+                HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <StackPanel Orientation="Horizontal" Spacing="20"
+                    HorizontalAlignment="Right" VerticalAlignment="Center">
+          <StackPanel Orientation="Horizontal" Spacing="8"
+                      IsVisible="{Binding !ShowIgnoreListView}">
+            <TextBlock Text="Restore on Close" VerticalAlignment="Center"
+                       Classes="subtle" />
+            <ToggleSwitch IsChecked="{Binding RestoreOnClose}"
+                          OnContent="" OffContent="" />
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" Spacing="8"
+                      IsVisible="{Binding !ShowIgnoreListView}">
+            <TextBlock Text="Show All" VerticalAlignment="Center"
+                       Classes="subtle" />
+            <ToggleSwitch IsChecked="{Binding ShowAll}"
+                          OnContent="" OffContent="" />
+          </StackPanel>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Spacing="8"
-                    IsVisible="{Binding !ShowIgnoreListView}">
-          <TextBlock Text="Show All" VerticalAlignment="Center"
-                     Classes="subtle" />
-          <ToggleSwitch IsChecked="{Binding ShowAll}"
-                        OnContent="" OffContent="" />
-        </StackPanel>
-      </StackPanel>
+      </Grid>
     </Border>
 
 

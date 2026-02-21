@@ -38,6 +38,8 @@ public partial class App : Application
 
       desktop.MainWindow = new MainWindow { DataContext = _mainViewModel };
       desktop.ShutdownRequested += OnShutdownRequested;
+
+      _ = _mainViewModel.CheckForUpdatesAsync();
     }
 
     base.OnFrameworkInitializationCompleted();
