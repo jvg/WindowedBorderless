@@ -13,7 +13,7 @@ internal static class Program
   public static AppBuilder BuildAvaloniaApp()
   {
     return AppBuilder.Configure<App>()
-      .UsePlatformDetect()
+      .UsePlatformDetect() 
       .LogToTrace();
   }
 }

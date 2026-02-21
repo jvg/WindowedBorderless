@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Reflection;
 using System.Text.Json;
+using WindowedBorderless.Services;
 
 namespace WindowedBorderless.Filtering;
 
@@ -10,11 +11,6 @@ public record CategorizedEntry(string Category, string ProcessName, string Descr
 
 public class IgnoreList
 {
-  private static readonly JsonSerializerOptions JsonOptions = new()
-  {
-    PropertyNameCaseInsensitive = true
-  };
-
   private readonly HashSet<string> _ignored;
 
   public IReadOnlyList<CategorizedEntry> Entries { get; }
@@ -54,7 +50,7 @@ public class IgnoreList
       var category = ParseCategory(resourceName);
 
       using var stream = assembly.GetManifestResourceStream(resourceName)!;
-      var batch = JsonSerializer.Deserialize<List<IgnoreListEntry>>(stream, JsonOptions) ?? [];
+      var batch = JsonSerializer.Deserialize(stream, AppJsonContext.Default.ListIgnoreListEntry) ?? [];
       entries.AddRange(batch.Select(e => new CategorizedEntry(category, e.ProcessName, e.Description)));
     }
 

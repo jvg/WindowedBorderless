@@ -11,8 +11,6 @@ public static class SettingsService
 
   private static readonly string SettingsFile = Path.Combine(SettingsDir, "settings.json");
 
-  private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
-
   public static Settings Load()
   {
     if (!File.Exists(SettingsFile))
@@ -21,7 +19,7 @@ public static class SettingsService
     try
     {
       var json = File.ReadAllText(SettingsFile);
-      return JsonSerializer.Deserialize<Settings>(json, JsonOptions) ?? new Settings();
+      return JsonSerializer.Deserialize(json, AppJsonContext.Default.Settings) ?? new Settings();
     }
     catch
     {
@@ -32,7 +30,7 @@ public static class SettingsService
   public static void Save(Settings settings)
   {
     Directory.CreateDirectory(SettingsDir);
-    var json = JsonSerializer.Serialize(settings, JsonOptions);
+    var json = JsonSerializer.Serialize(settings, AppJsonContext.Default.Settings);
     File.WriteAllText(SettingsFile, json);
   }
 }

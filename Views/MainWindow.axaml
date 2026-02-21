@@ -1,8 +1,10 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:WindowedBorderless.ViewModels"
+        xmlns:m="using:WindowedBorderless.Models"
         x:Class="WindowedBorderless.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
+        x:CompileBindings="True"
         Title="Windowed Borderless"
         Width="900" Height="580"
         WindowStartupLocation="CenterScreen">
@@ -62,7 +64,7 @@
               </ContextMenu>
             </ListBox.ContextMenu>
             <ListBox.ItemTemplate>
-              <DataTemplate>
+              <DataTemplate x:DataType="m:WindowInfo">
                 <StackPanel Orientation="Horizontal" Spacing="10">
                   <Image Source="{Binding Icon}" Width="20" Height="20"
                          VerticalAlignment="Center"
@@ -105,7 +107,7 @@
                    ItemsSource="{Binding BorderlessWindows}"
                    SelectionMode="Multiple">
             <ListBox.ItemTemplate>
-              <DataTemplate>
+              <DataTemplate x:DataType="m:WindowInfo">
                 <StackPanel Orientation="Horizontal" Spacing="10">
                   <Image Source="{Binding Icon}" Width="20" Height="20"
                          VerticalAlignment="Center"
@@ -151,7 +153,7 @@
             </TreeView.ItemTemplate>
             <TreeView.Styles>
               <!-- Hide categories with no search matches -->
-              <Style Selector="TreeViewItem" x:DataType="vm:IgnoreListCategoryViewModel">
+              <Style Selector="TreeView > TreeViewItem" x:DataType="vm:IgnoreListCategoryViewModel">
                 <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
                 <Setter Property="IsVisible" Value="{Binding IsVisible}" />
               </Style>
