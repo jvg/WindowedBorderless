@@ -26,5 +26,9 @@
   {
     "processName": "ts3client_win64",
     "description": "TeamSpeak 3"
+  },
+  {
+    "processName": "MozillaVPN",
+    "description": "Mozilla VPN"
   }
 ]

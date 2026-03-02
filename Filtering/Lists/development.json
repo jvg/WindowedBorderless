@@ -86,5 +86,37 @@
   {
     "processName": "dopus",
     "description": "Directory Opus"
+  },
+  {
+    "processName": "clion64",
+    "description": "CLion"
+  },
+  {
+    "processName": "goland64",
+    "description": "GoLand"
+  },
+  {
+    "processName": "phpstorm64",
+    "description": "PhpStorm"
+  },
+  {
+    "processName": "rubymine64",
+    "description": "RubyMine"
+  },
+  {
+    "processName": "datagrip64",
+    "description": "DataGrip"
+  },
+  {
+    "processName": "rustrover64",
+    "description": "RustRover"
+  },
+  {
+    "processName": "Ssms",
+    "description": "SQL Server Management Studio"
+  },
+  {
+    "processName": "dbforgesql",
+    "description": "dbForge Studio for SQL Server"
   }
 ]
