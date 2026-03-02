@@ -115,6 +115,13 @@ public partial class MainWindowViewModel(
     AutoSelectRemembered(_rememberedWindows);
     RefreshWindowList();
 
+    // Add placeholders for remembered windows whose process isn't running
+    foreach (var rw in _rememberedWindows)
+    {
+      if (!BorderlessWindows.Any(w => string.Equals(w.ProcessName, rw.ProcessName, StringComparison.OrdinalIgnoreCase)))
+        BorderlessWindows.Add(new WindowInfo(0, rw.ProcessName, rw.TitleHint));
+    }
+
     _initializing = false;
     SaveSettings();
 
@@ -196,10 +203,13 @@ public partial class MainWindowViewModel(
   {
     foreach (var window in selected.ToList())
     {
-      windowManager.RestoreWindow(window.Handle);
-      BorderlessWindows.Remove(window);
-      AvailableWindows.Add(window);
+      if (!window.IsPlaceholder)
+      {
+        windowManager.RestoreWindow(window.Handle);
+        AvailableWindows.Add(window);
+      }
 
+      BorderlessWindows.Remove(window);
       _rememberedWindows.RemoveAll(r =>
         string.Equals(r.ProcessName, window.ProcessName, StringComparison.OrdinalIgnoreCase));
     }
@@ -321,11 +331,29 @@ public partial class MainWindowViewModel(
         window.WindowTitle = freshTitle;
 
     // Refresh titles for borderless windows via live GetWindowText
-    foreach (var window in BorderlessWindows)
+    // and detect closed windows — convert them back to placeholders
+    for (var i = BorderlessWindows.Count - 1; i >= 0; i--)
     {
+      var window = BorderlessWindows[i];
+      if (window.IsPlaceholder) continue;
+
       var liveTitle = windowManager.GetCurrentTitle(window.Handle);
-      if (!string.IsNullOrEmpty(liveTitle) && liveTitle != window.WindowTitle)
-        window.WindowTitle = liveTitle;
+      if (!string.IsNullOrEmpty(liveTitle))
+      {
+        if (liveTitle != window.WindowTitle)
+          window.WindowTitle = liveTitle;
+      }
+      else
+      {
+        // Handle is no longer valid — process closed. Convert to placeholder.
+        var placeholder = new WindowInfo(0, window.ProcessName, window.WindowTitle);
+        BorderlessWindows[i] = placeholder;
+        _rememberedWindows.Add(new RememberedWindow
+        {
+          ProcessName = window.ProcessName,
+          TitleHint = window.WindowTitle
+        });
+      }
     }
 
     AutoSelectNewlyAppeared();
@@ -350,6 +378,12 @@ public partial class MainWindowViewModel(
     {
       _rememberedWindows.RemoveAll(r =>
         string.Equals(r.ProcessName, w.ProcessName, StringComparison.OrdinalIgnoreCase));
+
+      // Remove matching placeholder from BorderlessWindows
+      var placeholder = BorderlessWindows.FirstOrDefault(b =>
+        b.IsPlaceholder && string.Equals(b.ProcessName, w.ProcessName, StringComparison.OrdinalIgnoreCase));
+      if (placeholder is not null)
+        BorderlessWindows.Remove(placeholder);
     }
 
     MakeSelectedBorderless(toSelect);

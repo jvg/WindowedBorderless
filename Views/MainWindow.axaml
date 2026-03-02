@@ -110,7 +110,8 @@
                    DoubleTapped="OnBorderlessListDoubleTapped">
             <ListBox.ItemTemplate>
               <DataTemplate x:DataType="m:WindowInfo">
-                <StackPanel Orientation="Horizontal" Spacing="10">
+                <StackPanel Orientation="Horizontal" Spacing="10"
+                            Opacity="{Binding DisplayOpacity}">
                   <Image Source="{Binding Icon}" Width="20" Height="20"
                          VerticalAlignment="Center"
                          IsVisible="{Binding Icon, Converter={x:Static ObjectConverters.IsNotNull}}" />

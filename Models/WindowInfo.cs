@@ -10,6 +10,9 @@ public partial class WindowInfo(nint handle, string processName, string windowTi
   public string ProcessName { get; } = processName;
   public Bitmap? Icon { get; init; }
 
+  public bool IsPlaceholder => Handle == 0;
+  public double DisplayOpacity => IsPlaceholder ? 0.4 : 1.0;
+
   [ObservableProperty]
   [NotifyPropertyChangedFor(nameof(DisplayName))]
   private string _windowTitle = windowTitle;
