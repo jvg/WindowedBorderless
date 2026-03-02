@@ -22,8 +22,6 @@ public partial class MainWindowViewModel(
 
   [ObservableProperty] private bool _showAll;
 
-  [ObservableProperty] private bool _restoreOnClose = true;
-
   [ObservableProperty] private bool _isUpdateReady;
 
   private UpdateManager? _updateManager;
@@ -40,6 +38,9 @@ public partial class MainWindowViewModel(
 
   private readonly HashSet<string> _ignoredDisplayNames = new(StringComparer.OrdinalIgnoreCase);
   private readonly HashSet<string> _forcedProcessNames = new(StringComparer.OrdinalIgnoreCase);
+
+  private List<RememberedWindow> _rememberedWindows = [];
+  private bool _initializing;
 
   private DispatcherTimer? _debounceTimer;
   private DispatcherTimer? _fallbackTimer;
@@ -82,11 +83,6 @@ public partial class MainWindowViewModel(
     SaveSettings();
   }
 
-  partial void OnRestoreOnCloseChanged(bool value)
-  {
-    SaveSettings();
-  }
-
   partial void OnShowAllChanged(bool value)
   {
     RefreshWindowList();
@@ -100,9 +96,11 @@ public partial class MainWindowViewModel(
 
   public void Initialize()
   {
+    _initializing = true;
+
     var settings = SettingsService.Load();
 
-    RestoreOnClose = settings.RestoreOnClose;
+    _rememberedWindows = settings.RememberedWindows.ToList();
 
     foreach (var name in settings.IgnoredDisplayNames)
       _ignoredDisplayNames.Add(name);
@@ -114,9 +112,11 @@ public partial class MainWindowViewModel(
 
     // First refresh unfiltered so AutoSelectRemembered can find processes on the blocklist
     RefreshWindowList(true);
-    AutoSelectRemembered(settings.RememberedWindows);
-    SaveSettings();
+    AutoSelectRemembered(_rememberedWindows);
     RefreshWindowList();
+
+    _initializing = false;
+    SaveSettings();
 
     // Debounce timer: coalesces rapid WinEvent notifications into a single refresh
     _debounceTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(300) };
@@ -142,26 +142,32 @@ public partial class MainWindowViewModel(
     _fallbackTimer?.Stop();
 
     SaveSettings();
-
-    if (RestoreOnClose)
-      foreach (var window in BorderlessWindows.ToList())
-        windowManager.RestoreWindow(window.Handle);
   }
 
   private void SaveSettings()
   {
+    if (_initializing) return;
+
+    var remembered = BorderlessWindows
+      .Select(w => new RememberedWindow
+      {
+        ProcessName = w.ProcessName,
+        TitleHint = w.WindowTitle
+      })
+      .ToList();
+
+    // Preserve entries for processes that haven't appeared yet
+    foreach (var rw in _rememberedWindows)
+    {
+      if (!remembered.Any(r => string.Equals(r.ProcessName, rw.ProcessName, StringComparison.OrdinalIgnoreCase)))
+        remembered.Add(rw);
+    }
+
     var settings = new Settings
     {
-      RememberedWindows = BorderlessWindows
-        .Select(w => new RememberedWindow
-        {
-          ProcessName = w.ProcessName,
-          TitleHint = w.WindowTitle
-        })
-        .ToList(),
+      RememberedWindows = remembered,
       IgnoredDisplayNames = _ignoredDisplayNames.ToList(),
       ForcedProcessNames = _forcedProcessNames.ToList(),
-      RestoreOnClose = RestoreOnClose,
       Theme = SelectedTheme
     };
     SettingsService.Save(settings);
@@ -193,6 +199,9 @@ public partial class MainWindowViewModel(
       windowManager.RestoreWindow(window.Handle);
       BorderlessWindows.Remove(window);
       AvailableWindows.Add(window);
+
+      _rememberedWindows.RemoveAll(r =>
+        string.Equals(r.ProcessName, window.ProcessName, StringComparison.OrdinalIgnoreCase));
     }
 
     SaveSettings();
@@ -318,6 +327,32 @@ public partial class MainWindowViewModel(
       if (!string.IsNullOrEmpty(liveTitle) && liveTitle != window.WindowTitle)
         window.WindowTitle = liveTitle;
     }
+
+    AutoSelectNewlyAppeared();
+  }
+
+  private void AutoSelectNewlyAppeared()
+  {
+    if (_rememberedWindows.Count == 0) return;
+
+    var toSelect = AvailableWindows
+      .Where(w => _rememberedWindows.Any(r =>
+        string.Equals(r.ProcessName, w.ProcessName, StringComparison.OrdinalIgnoreCase)
+        && (string.IsNullOrEmpty(r.TitleHint)
+            || w.WindowTitle.Contains(r.TitleHint, StringComparison.OrdinalIgnoreCase)
+            || r.TitleHint.Contains(w.WindowTitle, StringComparison.OrdinalIgnoreCase))))
+      .ToList();
+
+    if (toSelect.Count == 0) return;
+
+    // Remove matched entries from the watchlist before making borderless
+    foreach (var w in toSelect)
+    {
+      _rememberedWindows.RemoveAll(r =>
+        string.Equals(r.ProcessName, w.ProcessName, StringComparison.OrdinalIgnoreCase));
+    }
+
+    MakeSelectedBorderless(toSelect);
   }
 
   private void AutoSelectRemembered(List<RememberedWindow> remembered)
