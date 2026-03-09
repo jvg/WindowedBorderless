@@ -11,5 +11,6 @@
   { "processName": "RadeonSoftware", "description": "AMD Radeon Software" },
   { "processName": "ShareX", "description": "ShareX" },
   { "processName": "paintdotnet", "description": "Paint.NET" },
-  { "processName": "JellyfinMediaPlayer", "description": "Jellyfin Media Player" }
+  { "processName": "JellyfinMediaPlayer", "description": "Jellyfin Media Player" },
+  { "processName": "FxSound", "description": "FxSound Audio Enhancer" }
 ]

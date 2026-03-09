@@ -1,0 +1,4 @@
+[
+  { "processName": "Battle.net", "description": "Blizzard Battle.net" },
+  { "processName": "steamwebhelper", "description": "Steam Web Helper" }
+]
